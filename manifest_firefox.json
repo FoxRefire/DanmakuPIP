@@ -1,0 +1,20 @@
+{
+    "name": "DanmakuPIP",
+    "description": "Show Danmaku comments in Picture-in-Picrure widow",
+    "version": "1.0",
+    "manifest_version": 3,
+    "icons": {
+        "128": "icon.png"
+    },
+    "content_scripts": [
+        {
+          "js": ["nicovideo.user.js"],
+          "matches": ["*://www.nicovideo.jp/watch/*"]
+        }
+    ],
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "DanmakuPIP@FoxRefire"
+        }
+    }
+}
