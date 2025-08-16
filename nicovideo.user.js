@@ -29,7 +29,7 @@ async function main() {
     let newVideo = createVideo(originalElems[0], newSource)
     console.log(newVideo)
     originalElems[0].after(newVideo)
-    originalElems.map(e => e.style.display = "none")
+    originalElems.map(e => e.remove())
 
 }
 
@@ -44,20 +44,21 @@ function createSource(originalElems) {
     let audioStream = getAudioStream(originalElems[0])
     let mixedStream = new MediaStream([
         ...videoStream.getVideoTracks(),
-                                      ...audioStream.getAudioTracks()
+        ...audioStream.getAudioTracks()
     ])
     let mediaSource = new MediaSource()
     mediaSource.addEventListener('sourceopen', () => {
         let sourceBuffer = mediaSource.addSourceBuffer('video/webm')
         mediaSource.duration = originalElems[0].duration
 
-        let recorder = new MediaRecorder(mixedStream, { mimeType: 'video/webm' })
-        recorder.ondataavailable = e => {
+        originalElems[0].recorder = new MediaRecorder(mixedStream, { mimeType: 'video/webm' })
+        originalElems[0].recorder.ondataavailable = e => {
             if (e && e.data && e.data.size > 0) {
                 e.data.arrayBuffer().then(buf => sourceBuffer.appendBuffer(buf))
             }
         }
-        recorder.start(500)
+        originalElems[0].recorder.start(500)
+        originalElems[0].recorder.pause()
     })
 
     return mediaSource
@@ -66,11 +67,16 @@ function createSource(originalElems) {
 function createVideo(originalVideo, mediaSource) {
     let newVideo = originalVideo.cloneNode()
     newVideo.src = URL.createObjectURL(mediaSource)
-    newVideo.onplay = async () => await originalVideo.play()
-    newVideo.onpause = () => originalVideo.pause()
+    newVideo.onplay = () => {
+        originalVideo.play()
+        originalVideo.recorder.resume()
+    }
+    newVideo.onpause = () => {
+        originalVideo.pause()
+        originalVideo.recorder.pause()
+    }
     originalVideo.onplay = () => newVideo.play()
     originalVideo.onpause = () => newVideo.pause()
-    originalVideo.classList.add("librezamFlag")
     return newVideo
 }
 
