@@ -29,7 +29,7 @@ async function main() {
     let newVideo = createVideo(originalElems[0], newSource)
     console.log(newVideo)
     originalElems[0].after(newVideo)
-    originalElems.map(e => e.style.display = "none")
+    originalElems.map(e => e.remove())
 
 }
 
@@ -70,7 +70,6 @@ function createVideo(originalVideo, mediaSource) {
     newVideo.onpause = () => originalVideo.pause()
     originalVideo.onplay = () => newVideo.play()
     originalVideo.onpause = () => newVideo.pause()
-    originalVideo.classList.add("librezamFlag")
     return newVideo
 }
 
