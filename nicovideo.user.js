@@ -9,15 +9,13 @@
 // ==/UserScript==
 
 async function main() {
-    return new Promise(resolve => {
-        let interval = setInterval(_ => {
-            let videoElm = document.querySelector("div[data-name=content] video")
-            let canvasElm = document.querySelector("div[data-name=comment] canvas")
-            if(canvasElm && videoElm.videoWidth && !videoElm.originalVideo) {
-                run(videoElm, canvasElm)
-            }
-        }, 100)
-    })
+    setInterval(_ => {
+        let videoElm = document.querySelector("div[data-name=content] video")
+        let canvasElm = document.querySelector("div[data-name=comment] canvas")
+        if(canvasElm && videoElm.videoWidth && !videoElm.originalVideo) {
+            run(videoElm, canvasElm)
+        }
+    }, 100)
 }
 
 async function run(videoElm, canvasElm) {
