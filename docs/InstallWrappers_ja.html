@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>カスタムビデオラッパーのインストールガイド - DanmakuPIP</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+        h3 {
+            color: #2c3e50;
+            margin-top: 25px;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            border: 1px solid #e9ecef;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #e9ecef;
+            overflow-x: auto;
+        }
+        .step {
+            background-color: #f8f9fa;
+            border-left: 4px solid #27ae60;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        .note {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-weight: bold;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>カスタムビデオラッパーのインストールガイド</h1>
+        
+        <div class="note">
+            <h2>このガイドについて</h2>
+            <p>MediaStreamの制約により、この拡張機能を有効にするとFirefoxのPiPウィンドウでシークバーが機能しなくなります。</p>
+            <p>このガイドではこの問題を修正する方法を解説します</p>
+        </div>
+
+        <h2>STEP1 (omni.jaのパッチ)</h2>
+        <div class="note">
+            <p>このステップは通常版Firefoxでのみ必要です。</p>
+            <p>Firefox Nightly、Developer Edition、Floorp、Zen、Librewolf、Waterfoxをご使用の方はこのステップを省略してください</p>
+        </div>
+
+        <div class="step">
+            <h3>1. omni.jaのパスを見つける</h3>
+            <p>omni.jaはFirefoxのインストールディレクトリの直下に配置されているはずです。</p>
+            <p>一般的なパスは次の通りです</p>
+            <pre><code>C:/Program Files/Mozilla Firefox/omni.ja
+C:/Program Files (x86)/Mozilla Firefox/omni.ja
+/Applications/Firefox.app/omni.ja
+/usr/lib/firefox/omni.ja
+/usr/lib64/firefox/omni.ja
+/opt/firefox/omni.ja</code></pre>
+            <p><code>about:support</code>ページからもFirefoxのインストールディレクトリを確認できます。</p>
+        </div>
+
+        <div class="step">
+            <h3>2. パッチを実行する</h3>
+            <p><a href="./omniPatcher.py"><code>omniPatcher.py</code></a>をダウンロードして次のように実行します。</p>
+            <pre><code>python omniPatcher.py /path/to/omni.ja</code></pre>
+        </div>
+
+        <div class="step">
+            <h3>3. スタートアップキャッシュを削除</h3>
+            <p>変更を反映するために<code>about:support</code>を開き、右上のボタンからスタートアップキャッシュを削除してください。</p>
+        </div>
+
+        <h2>STEP2 (about:configの変更)</h2>
+
+        <div class="step">
+            <h3>1. about:configを開く</h3>
+            <p>アドレスバーに<code>about:config</code>と入力します</p>
+        </div>
+
+        <div class="step">
+            <h3>2. 値の変更</h3>
+            <p><code>xpinstall.signatures.required</code>、<code>extensions.experiments.enabled</code>の両方の値が<code>false</code>に設定されているか確認してください</p>
+            <p>なっていない場合は変更し、項目が無い場合は真偽値を作成してください。</p>
+        </div>
+
+        <h2>STEP3 (カスタムビデオラッパーのインストール)</h2>
+
+        <div class="step">
+            <h3>1. ラッパーのダウンロード</h3>
+            <p><a href="./customWrappers.xpi"><code>customWrappers.xpi</code></a>をダウンロードして保存します</p>
+            <p>このファイルはFirefoxの内部拡張機能のフォークです。また、拡張機能本体とは異なり、MPLによってライセンスされています。</p>
+        </div>
+
+        <div class="step">
+            <h3>2. インストール</h3>
+            <p><code>about:addons</code>を開き、ダウンロードしたラッパー拡張機能をドラッグしてインストールします</p>
+        </div>
+
+        <div class="step">
+            <h3>3. ブラウザの再起動</h3>
+        </div>
+
+        <div class="success">
+            <h3>お疲れ様でした！</h3>
+            <p>インストール後、Firefoxを再起動するとこの拡張機能を有効にしてもPiPウィンドウにシークバーが表示されるようになっているはずです</p>
+        </div>
+    </div>
+</body>
+</html>
