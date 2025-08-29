@@ -9,7 +9,8 @@
     "content_scripts": [
         {
           "js": ["nicovideo.user.js"],
-          "matches": ["*://www.nicovideo.jp/watch/*"]
+          "matches": ["*://www.nicovideo.jp/watch/*"],
+          "world":"MAIN"
         }
     ],
     "browser_specific_settings": {

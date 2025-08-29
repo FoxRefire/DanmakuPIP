@@ -23,17 +23,16 @@ async function waitTargetElements() {
 
 async function main() {
     let originalElems = await waitTargetElements()
-    let newSource = createSource(originalElems)
-    console.log(newSource)
+    let newStream = createStream(originalElems)
 
-    let newVideo = createVideo(originalElems[0], newSource)
+    let newVideo = createVideo(originalElems[0], newStream)
     console.log(newVideo)
     originalElems[0].after(newVideo)
     originalElems.map(e => e.remove())
 
 }
 
-function createSource(originalElems) {
+function createStream(originalElems) {
     let newCanvas = document.createElement("canvas")
     let ctx = newCanvas.getContext("2d")
 
@@ -46,35 +45,16 @@ function createSource(originalElems) {
         ...videoStream.getVideoTracks(),
         ...audioStream.getAudioTracks()
     ])
-    let mediaSource = new MediaSource()
-    mediaSource.addEventListener('sourceopen', () => {
-        let sourceBuffer = mediaSource.addSourceBuffer('video/webm')
-        mediaSource.duration = originalElems[0].duration
 
-        originalElems[0].recorder = new MediaRecorder(mixedStream, { mimeType: 'video/webm' })
-        originalElems[0].recorder.ondataavailable = e => {
-            if (e && e.data && e.data.size > 0) {
-                e.data.arrayBuffer().then(buf => sourceBuffer.appendBuffer(buf))
-            }
-        }
-        originalElems[0].recorder.start(500)
-        originalElems[0].recorder.pause()
-    })
-
-    return mediaSource
+    return mixedStream
 }
 
-function createVideo(originalVideo, mediaSource) {
+function createVideo(originalVideo, stream) {
     let newVideo = originalVideo.cloneNode()
-    newVideo.src = URL.createObjectURL(mediaSource)
-    newVideo.onplay = () => {
-        originalVideo.play()
-        originalVideo.recorder.resume()
-    }
-    newVideo.onpause = () => {
-        originalVideo.pause()
-        originalVideo.recorder.pause()
-    }
+    newVideo.srcObject = stream
+    newVideo.onplay = () => originalVideo.play()
+    newVideo.onpause = () => originalVideo.pause()
+    newVideo.originalVideo = originalVideo
     originalVideo.onplay = () => newVideo.play()
     originalVideo.onpause = () => newVideo.pause()
     return newVideo
