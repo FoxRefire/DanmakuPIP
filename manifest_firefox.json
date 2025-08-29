@@ -1,16 +1,27 @@
 {
     "name": "DanmakuPIP",
-    "description": "Show Danmaku comments in Picture-in-Picrure widow",
+    "description": "Show Danmaku comments in Picture-in-Picrure window",
     "version": "1.0",
     "manifest_version": 3,
     "icons": {
         "128": "icon.png"
     },
+    "action": {
+        "default_popup": "popup.html"
+    },
     "content_scripts": [
         {
-          "js": ["nicovideo.user.js"],
-          "matches": ["*://www.nicovideo.jp/watch/*"],
-          "world":"MAIN"
+          "js": ["content.js"],
+          "matches": ["*://www.nicovideo.jp/watch/*", "*://www.bilibili.com/video/*"]
+        }
+    ],
+    "permissions": [
+        "storage"
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": ["nicovideo.user.js", "bilibili.user.js"],
+            "matches": ["*://www.nicovideo.jp/watch/*", "*://www.bilibili.com/video/*"]
         }
     ],
     "browser_specific_settings": {
