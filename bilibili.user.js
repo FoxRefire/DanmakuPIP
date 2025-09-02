@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         DanmakuPIP Niconico
+// @name         DanmakuPIP Bilibili
 // @namespace    http://tampermonkey.net/
 // @version      1.0
 // @description  Show Danmaku comments in Picture-in-Picrure widow
@@ -9,10 +9,14 @@
 // ==/UserScript==
 
 async function loadDanmaku() {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/danmaku/dist/danmaku.min.js';
-    document.head.appendChild(script);
-    return new Promise(r => script.onload = r);
+    if(typeof chrome == "undefined" && typeof Danmaku == "undefined") {
+        //only runs when script is running as userscript
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/danmaku/dist/danmaku.min.js';
+        document.head.appendChild(script);
+        return new Promise(r => script.onload = r);
+    }
+    return -1
 }
 
 function bilibiliParser(danmakuXml) {
@@ -51,12 +55,7 @@ async function fetchDanmaku(cid){
 }
 
 function getCid(){
-    const scripts=document.querySelectorAll('script');
-    for (let s of scripts){
-        const match=s.textContent.match(/\"cid\":(\d+),/);
-        if (match) return match[1];
-    }
-    return null;
+    return window.__INITIAL_STATE__.videoData.pages[0].cid
 }
 
 async function createCommentsCanvas(video, container, cid) {

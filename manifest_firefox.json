@@ -20,7 +20,7 @@
     ],
     "web_accessible_resources": [
         {
-            "resources": ["nicovideo.user.js", "bilibili.user.js"],
+            "resources": ["nicovideo.user.js", "bilibili.user.js", "danmaku.min.js"],
             "matches": ["*://www.nicovideo.jp/watch/*", "*://www.bilibili.com/video/*"]
         }
     ],

@@ -18,9 +18,10 @@
     "permissions": [
         "storage"
     ],
-    "browser_specific_settings": {
-        "gecko": {
-            "id": "DanmakuPIP@FoxRefire"
+    "web_accessible_resources": [
+        {
+            "resources": ["nicovideo.user.js", "bilibili.user.js", "danmaku.min.js"],
+            "matches": ["*://www.nicovideo.jp/watch/*", "*://www.bilibili.com/video/*"]
         }
-    }
+    ]
 }
