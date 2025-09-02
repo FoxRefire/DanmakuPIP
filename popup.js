@@ -1,4 +1,4 @@
-let enabledScripts = await chrome.storage.local.get("enabledScripts").then(r => r.enabledScripts) || []
+let enabledScripts = await chrome.storage.local.get("enabledScripts").then(r => r.enabledScripts) || ["nicovideo", "bilibili"]
 enabledScripts.forEach(script => {
     const checkbox = document.querySelector(`input[name="scripts"][value="${script}"]`);
     if (checkbox) {

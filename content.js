@@ -1,5 +1,5 @@
 async function main() {
-    let enabledScripts = await chrome.storage.local.get("enabledScripts").then(r => r.enabledScripts) || []
+    let enabledScripts = await chrome.storage.local.get("enabledScripts").then(r => r.enabledScripts) || ["nicovideo", "bilibili"]
     let origin = location.origin
     if (enabledScripts.includes("nicovideo") && origin.includes("nicovideo.jp")) {
         applyScript("nicovideo");
